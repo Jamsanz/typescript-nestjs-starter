@@ -10,9 +10,9 @@ import {
   Res,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiHeader, ApiHeaders, ApiTags } from '@nestjs/swagger';
-import { IUser } from 'src/users/users.interface';
-import { UsersService } from 'src/users/users.service';
-import { response } from 'src/utils';
+import { IUser } from './users.interface';
+import { UsersService } from './users.service';
+import { response } from '../utils';
 
 @ApiTags('users')
 @ApiBearerAuth()

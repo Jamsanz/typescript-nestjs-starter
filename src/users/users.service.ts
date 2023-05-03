@@ -1,12 +1,13 @@
 import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
 import { Model } from 'mongoose';
-import { IUser } from 'src/users/users.interface';
-import { isEmpty } from 'src/utils';
+import { IUser } from './users.interface';
+import { isEmpty } from '../utils';
+import { InjectModel } from '@nestjs/mongoose';
 
 @Injectable()
 export class UsersService {
 
-  constructor (@Inject('USER_MODEL') private userModel: Model<IUser & Document> ){}
+  constructor (@InjectModel('User') private userModel: Model<IUser & Document> ){}
   public async findAll(): Promise<IUser[]> {
     return await this.userModel.find();
   }

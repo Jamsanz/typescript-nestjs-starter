@@ -1,28 +1,24 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsEmail, IsString } from 'class-validator';
+import { IsEmail, IsString, IsArray } from 'class-validator';
 import { IUser } from 'src/users/users.interface';
 
 export class SignUpDto implements IUser {
   @ApiProperty()
   @IsString()
-  firstName: string;
-  
-  @ApiProperty()
-  @IsString()
-  lastName: string;
-  
+  name: string;
+
   @ApiProperty()
   @IsString()
   phone: string;
 
   @ApiProperty()
   @IsString()
-  address: string;
+  address?: string;
 
   @ApiProperty()
   @IsString()
-  profileImg: string;
-  
+  profileImg?: string;
+
   @ApiProperty()
   @IsEmail()
   email: string;
@@ -30,4 +26,8 @@ export class SignUpDto implements IUser {
   @ApiProperty()
   @IsString()
   password: string;
+
+  @ApiProperty()
+  @IsArray()
+  role?: ('ADMIN' | 'SUPER_ADMIN' | 'USER')[];
 }

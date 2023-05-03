@@ -1,12 +1,15 @@
 import { HttpException, HttpStatus, Inject, Injectable, NestMiddleware } from '@nestjs/common';
 import { verify } from 'jsonwebtoken';
 import { Model } from 'mongoose';
-import { IUser } from 'src/users/users.interface';
+import { IUser } from '../users/users.interface';
+import { InjectModel } from '@nestjs/mongoose';
+import { RequestWithUser } from './auth.interface';
+import { NextFunction, Response } from 'express';
 
 @Injectable()
 export class AuthMiddleware implements NestMiddleware {
-  constructor(@Inject('USER_MODEL') private userModel: Model<IUser & Document>){}
-  async use(req: any, res: any, next: (error?: any) => void) {
+  constructor(@InjectModel('User') private userModel: Model<IUser & Document>){}
+  async use(req: RequestWithUser, res: Response, next: NextFunction) {
     try {
       const Authorization = req.header('Authorization')?.split('Bearer ')[1];
 

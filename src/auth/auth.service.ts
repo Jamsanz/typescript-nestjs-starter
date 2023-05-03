@@ -1,16 +1,17 @@
-import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { compare, hash } from 'bcrypt';
 import { Model } from 'mongoose';
-import { IUser } from 'src/users/users.interface';
+import { IUser } from '../users/users.interface';
 import { authResponse, isEmpty, ITokenData } from 'src/utils';
 import { LoginDto } from './dto/login.dto';
 import { SignUpDto } from './dto/signup.dto';
 import { sign } from 'jsonwebtoken';
+import { InjectModel } from '@nestjs/mongoose';
 
 @Injectable()
 export class AuthService {
 
-  constructor(@Inject('USER_MODEL') private userModel: Model<IUser & Document>) { }
+  constructor(@InjectModel('User') private userModel: Model<IUser & Document>) { }
   
   public async signup(auth: SignUpDto): Promise<authResponse<IUser>> {
     if (isEmpty(auth)) throw new HttpException('Bad Request', HttpStatus.BAD_REQUEST);
@@ -41,8 +42,11 @@ export class AuthService {
     const dataStoredInToken = {
       _id: user._id,
       email: user.email,
-      first_name: user.firstName,
-      last_name: user.lastName,
+      name: user.name,
+      profile: user?.profileImg,
+      address: user?.address,
+      dob: user?.dob,
+      phone: user?.phone,
     };
     const secretKey = process.env.SECRET_KEY;
     const expiresIn = 60 * 60;
